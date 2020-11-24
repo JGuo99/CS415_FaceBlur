@@ -15,33 +15,28 @@ def faceDetect(path, img):
 
     print("Found {0} face(s)!".format(len(face)))
 
+    imgHeight, imgWidth = img.shape[:2]
+
+    mask = np.zeros(img.shape, dtype = 'uint8')
     for (x, y, w, h) in face:
-        # firstMask = np.zeros(img.shape, dtype = 'uint8')
         cv2.ellipse(
-            # firstMask,
-            img,
-            ((x+w//2), math.floor((y+h)/1.5)),
+            mask,
+            ((x+w//2), math.floor((y+h)/1.25)),
             (w//2, math.floor(h/1.3)),
             0, 0, 360,
             (50, 150, 250),
-            2
+            -1
         )
-        # secondMask = cv2.bitwise_and(img, img, mask = firstMask)
-        mask = np.zeros(img.shape, dtype = 'uint8')
-        # mask = Image.new("BGR", img.size, color="orange")
-
-        blur = cv2.GaussianBlur(img, (5,5), 0)
-        # result = Image.composite(blur, img, mask)
-
-        result = np.where(np.array(mask) > 0, np.array(blur), np.array(img)) 
-        # imgBlur = cv2.medianBlur(img, 99)
-        # faceBlurred = np.where(mask > 0, imgBlur, img)
-        
+        blur = cv2.GaussianBlur(img, (15, 15), 1)
+        width, height = (50, 50)
+        temp = cv2.resize(blur, (width, height), interpolation=cv2.INTER_LINEAR)
+        pixel = cv2.resize(temp, (imgWidth, imgHeight), interpolation=cv2.INTER_NEAREST)
+        result = np.where(np.array(mask) > 0, np.array(pixel), np.array(img))        
     return result
 
 if __name__ == '__main__':
     faceCascadePath = 'haarcascade_frontalface_alt.xml'
-    img = cv2.imread('test3.png')
+    img = cv2.imread('Images/test5.png')
     detectedImg = faceDetect(faceCascadePath, img)
     
     cv2.imshow("Detected Face", detectedImg)
