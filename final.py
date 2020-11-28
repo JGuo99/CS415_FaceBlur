@@ -8,7 +8,7 @@ path = 'haarcascade_frontalface_alt.xml'
 
 
 def faceDetect(img):
-    result = np.zeros(img.shape, dtype='uint8')
+    result = img
     faceCascade = cv2.CascadeClassifier(path)
     face = faceCascade.detectMultiScale(img,
                                         scaleFactor=1.1,
@@ -53,12 +53,12 @@ def faceDetectLive():
 
 
 def getUserInput():
-    print("FACE DETECTION SOFTWARE")
-    print("PLEASE ENTER THE NUMBER OF THE FEATURE YOU WISH TO USE\n")
-    print("1: WEBCAM FACE DETECTION")
-    print("2: DETECT FACES IN IMAGE")
-    print("3: QUIT\n")
     while True:
+        print("FACE DETECTION SOFTWARE")
+        print("PLEASE ENTER THE NUMBER OF THE FEATURE YOU WISH TO USE\n")
+        print("1: WEBCAM FACE DETECTION")
+        print("2: DETECT FACES IN IMAGE")
+        print("3: QUIT\n")
         choice = int(input())
         if choice == 1:
             faceDetectLive()
